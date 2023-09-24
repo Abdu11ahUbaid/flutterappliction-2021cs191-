@@ -89,7 +89,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+                Text('Columns and Row Nesting 1'),
+                Text('Columns and Row Nesting 2'),
+                Text('Columns and Row Nesting 3'),
+                Padding(padding: EdgeInsets.all(16.0)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text('Row Nesting 1'),
+                    Text('Row Nesting 2'),
+                    Text('Row Nesting 3'),
+                  ],
+                ),
                 const ContainerWithBoxDecorationWidget(),
               ],
             ),
