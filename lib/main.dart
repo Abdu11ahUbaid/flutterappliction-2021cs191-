@@ -89,23 +89,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Text('Columns and Row Nesting 1'),
-                Text('Columns and Row Nesting 2'),
-                Text('Columns and Row Nesting 3'),
-                Padding(padding: EdgeInsets.all(16.0)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text('Row Nesting 1'),
-                    Text('Row Nesting 2'),
-                    Text('Row Nesting 3'),
-                  ],
-                ),
                 const ContainerWithBoxDecorationWidget(),
+                Divider(),
+                const ColumnWidget(),
+                Divider(),
+                const RowWidget(),
+                Divider(),
+                const ColumnAndRowNestingWidget(),
               ],
             ),
           ),
@@ -181,6 +172,83 @@ class ContainerWithBoxDecorationWidget extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class ColumnWidget extends StatelessWidget {
+  const ColumnWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Text('Column 1'),
+        Divider(),
+        Text('Column 2'),
+        Divider(),
+        Text('Column 3'),
+      ],
+    );
+  }
+}
+
+class RowWidget extends StatelessWidget {
+  const RowWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text('Row 1'),
+            Padding(padding: EdgeInsets.all(16.0)),
+            Text('Row 2'),
+            Padding(padding: EdgeInsets.all(16.0)),
+            Text('Row 3'),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class ColumnAndRowNestingWidget extends StatelessWidget {
+  const ColumnAndRowNestingWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Text('Columns and Row Nesting 1'),
+        Text('Columns and Row Nesting 2'),
+        Text('Columns and Row Nesting 3'),
+        Padding(padding: EdgeInsets.all(16.0)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text('Row Nesting 1'),
+            Text('Row Nesting 2'),
+            Text('Row Nesting 3'),
+          ],
         ),
       ],
     );
