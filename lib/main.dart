@@ -1,256 +1,154 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Home Page'),
+      title: 'Orientation Example',
+      home: Home(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            // Add your onPressed logic here
-          },
-        ),
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              // Add your onPressed logic here
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              // Add your onPressed logic here
-            },
-          ),
-        ],
-        flexibleSpace: SafeArea(
-          child: Icon(
-            Icons.photo_camera,
-            size: 75.0,
-            color: Colors.white70,
-          ),
-        ),
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.lightGreen.shade100,
-            height: 75.0,
-            width: double.infinity,
-            child: Center(
-              child: Text('Bottom'),
-            ),
-          ),
-          preferredSize: Size.fromHeight(75.0),
-        ),
+        title: Text('Orientation Example'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SafeArea(
-          child: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                const ContainerWithBoxDecorationWidget(),
+                const OrientationLayoutIconsWidget(),
                 Divider(),
-                const ColumnWidget(),
+                const OrientationLayoutWidget(),
                 Divider(),
-                const RowWidget(),
+                const GridViewWidget(),
                 Divider(),
-                const ColumnAndRowNestingWidget(),
+                const OrientationBuilderWidget(),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
 
-class ContainerWithBoxDecorationWidget extends StatelessWidget {
-  const ContainerWithBoxDecorationWidget({
+class OrientationLayoutIconsWidget extends StatelessWidget {
+  const OrientationLayoutIconsWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    Orientation _orientation = MediaQuery.of(context).orientation;
+    return _orientation == Orientation.portrait
+        ? Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
+        Icon(
+          Icons.school,
+          size: 48.0,
+        ),
+      ],
+    )
+        : Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(
+          Icons.school,
+          size: 48.0,
+        ),
+        Icon(
+          Icons.brush,
+          size: 48.0,
+        ),
+      ],
+    );
+  }
+}
+
+class OrientationLayoutWidget extends StatelessWidget {
+  const OrientationLayoutWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Orientation _orientation = MediaQuery.of(context).orientation;
+    return _orientation == Orientation.portrait
+        ? Container(
+      alignment: Alignment.center,
+      color: Colors.yellow,
+      height: 100.0,
+      width: 100.0,
+      child: Text('Portrait'),
+    )
+        : Container(
+      alignment: Alignment.center,
+      color: Colors.lightGreen,
+      height: 100.0,
+      width: 200.0,
+      child: Text('Landscape'),
+    );
+  }
+}
+
+class GridViewWidget extends StatelessWidget {
+  const GridViewWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Orientation _orientation = MediaQuery.of(context).orientation;
+    return GridView.count(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      crossAxisCount: _orientation == Orientation.portrait ? 2 : 4,
+      childAspectRatio: 5.0,
+      children: List.generate(8, (int index) {
+        return Text(
+          "Grid $index",
+          textAlign: TextAlign.center,
+        );
+      }),
+    );
+  }
+}
+
+class OrientationBuilderWidget extends StatelessWidget {
+  const OrientationBuilderWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        return orientation == Orientation.portrait
+            ? Container(
+          alignment: Alignment.center,
+          color: Colors.yellow,
           height: 100.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(100.0),
-              bottomRight: Radius.circular(10.0),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.white,
-                Colors.lightGreen.shade500,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 10.0,
-                offset: Offset(0.0, 10.0),
-              ),
-            ],
-          ),
-          child: Center(
-            child: RichText(
-              text: TextSpan(
-                text: 'Flutter World',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.deepPurple,
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.deepPurpleAccent,
-                  decorationStyle: TextDecorationStyle.dotted,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.normal,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: ' for',
-                  ),
-                  TextSpan(
-                    text: ' Mobile',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ColumnWidget extends StatelessWidget {
-  const ColumnWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Text('Column 1'),
-        Divider(),
-        Text('Column 2'),
-        Divider(),
-        Text('Column 3'),
-      ],
-    );
-  }
-}
-
-class RowWidget extends StatelessWidget {
-  const RowWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text('Row 1'),
-            Padding(padding: EdgeInsets.all(16.0)),
-            Text('Row 2'),
-            Padding(padding: EdgeInsets.all(16.0)),
-            Text('Row 3'),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class ColumnAndRowNestingWidget extends StatelessWidget {
-  const ColumnAndRowNestingWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Text('Columns and Row Nesting 1'),
-        Text('Columns and Row Nesting 2'),
-        Text('Columns and Row Nesting 3'),
-        Padding(padding: EdgeInsets.all(16.0)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text('Row Nesting 1'),
-            Text('Row Nesting 2'),
-            Text('Row Nesting 3'),
-          ],
-        ),
-      ],
+          width: 100.0,
+          child: Text('Portrait'),
+        )
+            : Container(
+          alignment: Alignment.center,
+          color: Colors.lightGreen,
+          height: 100.0,
+          width: 200.0,
+          child: Text('Landscape'),
+        );
+      },
     );
   }
 }
